@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public int points;
 
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
@@ -61,8 +62,9 @@ public class PlayerController : MonoBehaviour
         if (!loosed)
             gameObject.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space))
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)) && SceneManager.GetActiveScene().buildIndex == 1)
         {
+            SoundManager.Instance.Play("Jump" + Random.Range(0, 4).ToString());
             rb.AddForce(Vector3.up * jumpForce * Time.deltaTime, ForceMode2D.Impulse);
         }
     }
@@ -73,9 +75,10 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.tag == "Obstacle")
         {
+            SoundManager.Instance.Play("Dead");
             CanvasManager.Instance.looseScreen();
-            rb.bodyType = RigidbodyType2D.Static;
             rb.velocity *= 0;
+            rb.bodyType = RigidbodyType2D.Static;
         }
     }
 }
