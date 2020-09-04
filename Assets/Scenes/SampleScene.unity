@@ -6242,10 +6242,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1394900388, guid: 8ed4fe0ea18729e40a6e0bb2e1623c12, type: 3}
-      propertyPath: jumpForce
-      value: 6000
-      objectReference: {fileID: 0}
     - target: {fileID: 2812968773436155347, guid: 8ed4fe0ea18729e40a6e0bb2e1623c12, type: 3}
       propertyPath: m_Name
       value: Player

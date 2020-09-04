@@ -100,7 +100,9 @@ MonoBehaviour:
   moveSpeed: 20
   jumpForce: 3000
   lookAtSpeed: 200
+  loosed: 0
   points: 0
+  rb: {fileID: 0}
 --- !u!50 &4651461334858866880
 Rigidbody2D:
   serializedVersion: 4
@@ -116,7 +118,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0.05
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 9.81
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
