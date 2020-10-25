@@ -22,28 +22,28 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.velocity.x = moveSpeed; // Change this to get the velocity you would prefer
+        // Since it is a public variable, I do not know the final value of moveSpeed, but you would want to reduce it
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!loosed)
-            MovePlayer();
+        if (loosed) return;
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)) && SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            Jump();
+        }
 
         //lookAtVelocity();
     }
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance != null) { Destroy(gameObject); return; }
+        
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void lookAtVelocity()
@@ -57,27 +57,21 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void MovePlayer()
+    private void Jump()
     {
-        if (!loosed)
-            gameObject.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
-
-        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)) && SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            SoundManager.Instance.Play("Jump" + Random.Range(0, 4).ToString());
-            rb.AddForce(Vector3.up * jumpForce * Time.deltaTime, ForceMode2D.Impulse);
-        }
+        SoundManager.Instance.Play("Jump" + Random.Range(0, 4).ToString());
+        rb.AddForce(Vector3.up * jumpForce * Time.deltaTime, ForceMode2D.Impulse);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.tag);
 
-        if (collision.gameObject.tag == "Obstacle")
+        if (collision.gameObject.CompareTag("Obstacle"))
         {
             SoundManager.Instance.Play("Dead");
             CanvasManager.Instance.looseScreen();
-            rb.velocity *= 0;
+            rb.velocity = 0;
             rb.bodyType = RigidbodyType2D.Static;
         }
     }
